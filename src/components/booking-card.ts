@@ -62,4 +62,4 @@ export class BookingCard extends HTMLElement {
   }
 }
 
-// П2: зарегистрируйте booking-card после объявления класса.
+customElements.define('booking-card', BookingCard)
