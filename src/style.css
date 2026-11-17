@@ -13,5 +13,6 @@ form { display: grid; grid-template-columns: 1fr 1fr auto; gap: 14px; align-item
 .columns { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; } .cards { display: grid; gap: 12px; }
 .legacy-card { padding: 16px; border: 1px dashed #9ab3a6; border-radius: 12px; background: white; overflow-wrap: anywhere; }
 footer { padding: 26px 0; font-size: 14px; } .summary { font-size: 18px; }
-/* П6: временный внешний button и переменная на #sample добавляются ниже. */
+
 @media (max-width: 650px) { .columns, form { grid-template-columns: 1fr; } main { padding: 18px 12px; } }
+#sample { --booking-accent: #087f72; }

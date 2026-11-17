@@ -1,10 +1,9 @@
 import './style.css'
 import type { Booking } from './models/booking'
 import { initialBookings } from './models/booking'
-import { legacyCard, updateLegacy } from './legacy-card'
 import { mountLab } from './lab'
-// П2: здесь импортируйте модуль регистрации карточки.
-// П9: здесь импортируйте тип BookingCard.
+import './components/booking-card'
+import type { BookingCard } from './components/booking-card'
 
 const app = document.querySelector<HTMLDivElement>('#app')!
 app.innerHTML = `
@@ -34,12 +33,12 @@ const message = document.querySelector<HTMLElement>('#message')!
 let received = 0
 
 function makeCard(booking: Booking): HTMLElement {
-  // П9: замените тело функции созданием booking-card и передачей booking.
-  return legacyCard(booking, confirmBooking)
+  const card = document.createElement('booking-card') as BookingCard
+  card.booking = booking
+  return card
 }
 function updateCard(card: HTMLElement, booking: Booking) {
-  // П9: замените тело повторным присваиванием свойства booking.
-  updateLegacy(card, booking)
+  (card as BookingCard).booking = booking
 }
 
 // Синхронизация уже готова: сохраняет существующие элементы по id.
@@ -72,7 +71,7 @@ lists.addEventListener('booking-confirm', (event) => {
   if (!bookings.some(row => row.id === id && row.status === 'new')) return
   received += 1
   events.textContent = String(received)
-  // П9: передайте id готовой функции confirmBooking.
+  confirmBooking(id)
 })
 form.addEventListener('submit', (event) => {
   event.preventDefault()

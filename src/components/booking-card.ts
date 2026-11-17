@@ -17,19 +17,20 @@ export class BookingCard extends HTMLElement {
       h3 { margin: 0 0 8px; overflow-wrap: anywhere; }
       p { margin: 6px 0; }
       /* П6: замените фон внутренней кнопки на CSS-переменную с запасным цветом. */
-      button { background: #355bd4; color: white; border: 0; border-radius: 6px; padding: 9px 14px; font: inherit; cursor: pointer; }
-      button:disabled { background: #dfe6e3; color: #52665e; cursor: default; }
+      button { background: var(--booking-accent, #355bd4); color: white; border: 0; border-radius: 6px; padding: 9px 14px; font: inherit; cursor: pointer; }      button:disabled { background: #dfe6e3; color: #52665e; cursor: default; }
       button:focus-visible { outline: 3px solid #a15c00; outline-offset: 3px; }
     `
     const article = document.createElement('article')
     this.button.type = 'button'
     article.append(this.nameText, this.seatsText, this.statusText, this.groupText, this.button)
-    // П3: создайте shadow root, добавьте style и article, вызовите render.
+    const root = this.attachShadow({ mode: 'open' })
+    root.append(style, article)
+    this.render()
   }
 
   set booking(value: Booking) {
-    // П4: сохраните value и обновите отображение.
-    void value
+    this.current = value
+    this.render()
   }
 
   private render() {
@@ -43,23 +44,28 @@ export class BookingCard extends HTMLElement {
       this.button.disabled = true
       return
     }
-    // П4: выведите имя и число участников.
-    // П5: выведите статус, текст кнопки и её доступность.
-    // П10: выведите «Индивидуально» или «Группа» в groupText.
+    this.nameText.textContent = booking.name
+    this.seatsText.textContent = `Участников: ${booking.seats}`
+    this.statusText.textContent = booking.status === 'confirmed' ? 'Подтверждена' : 'Новая заявка';
+    this.button.textContent = booking.status === 'confirmed' ? 'Подтверждено' : 'Подтвердить';
+    this.button.disabled = booking.status === 'confirmed' ? true : false;
+    this.groupText.textContent = booking.seats === 1 ? 'Индивидуально' : 'Группа';
   }
 
   private onConfirm = () => {
     if (!this.current || this.current.status === 'confirmed') return
-    // П7: отправьте booking-confirm от this с detail.id и bubbles: true.
-  }
+    this.dispatchEvent(new CustomEvent('booking-confirm', {
+      detail: { id: this.current.id },
+      bubbles: true,
+}))  }
 
   connectedCallback() {
-    // П7: подключите this.onConfirm к click внутренней кнопки.
+    this.button.addEventListener('click', this.onConfirm)
   }
 
   disconnectedCallback() {
-    // П8: снимите тот же обработчик.
+   this.button.removeEventListener('click', this.onConfirm)
   }
 }
 
-// П2: зарегистрируйте booking-card после объявления класса.
+customElements.define('booking-card', BookingCard)
