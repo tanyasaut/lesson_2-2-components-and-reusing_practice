@@ -24,7 +24,9 @@ export class BookingCard extends HTMLElement {
     const article = document.createElement('article')
     this.button.type = 'button'
     article.append(this.nameText, this.seatsText, this.statusText, this.groupText, this.button)
-    // П3: создайте shadow root, добавьте style и article, вызовите render.
+    const root = this.attachShadow({ mode: 'open' })
+    root.append(style, article)
+    this.render()
   }
 
   set booking(value: Booking) {
