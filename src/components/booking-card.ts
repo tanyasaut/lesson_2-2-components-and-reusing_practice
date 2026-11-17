@@ -30,8 +30,8 @@ export class BookingCard extends HTMLElement {
   }
 
   set booking(value: Booking) {
-    // П4: сохраните value и обновите отображение.
-    void value
+    this.current = value
+    this.render()
   }
 
   private render() {
@@ -45,7 +45,8 @@ export class BookingCard extends HTMLElement {
       this.button.disabled = true
       return
     }
-    // П4: выведите имя и число участников.
+    this.nameText.textContent = booking.name
+    this.seatsText.textContent = `Участников: ${booking.seats}`
     // П5: выведите статус, текст кнопки и её доступность.
     // П10: выведите «Индивидуально» или «Группа» в groupText.
   }
