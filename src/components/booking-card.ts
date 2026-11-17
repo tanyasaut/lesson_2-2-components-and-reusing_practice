@@ -54,11 +54,13 @@ export class BookingCard extends HTMLElement {
 
   private onConfirm = () => {
     if (!this.current || this.current.status === 'confirmed') return
-    // П7: отправьте booking-confirm от this с detail.id и bubbles: true.
-  }
+    this.dispatchEvent(new CustomEvent('booking-confirm', {
+      detail: { id: this.current.id },
+      bubbles: true,
+}))  }
 
   connectedCallback() {
-    // П7: подключите this.onConfirm к click внутренней кнопки.
+    this.button.addEventListener('click', this.onConfirm)
   }
 
   disconnectedCallback() {
