@@ -47,7 +47,9 @@ export class BookingCard extends HTMLElement {
     }
     this.nameText.textContent = booking.name
     this.seatsText.textContent = `Участников: ${booking.seats}`
-    // П5: выведите статус, текст кнопки и её доступность.
+    this.statusText.textContent = booking.status === 'confirmed' ? 'Подтверждена' : 'Новая заявка';
+    this.button.textContent = booking.status === 'confirmed' ? 'Подтверждено' : 'Подтвердить';
+    this.button.disabled = booking.status === 'confirmed' ? true : false;
     // П10: выведите «Индивидуально» или «Группа» в groupText.
   }
 
