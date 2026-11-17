@@ -49,7 +49,7 @@ export class BookingCard extends HTMLElement {
     this.statusText.textContent = booking.status === 'confirmed' ? 'Подтверждена' : 'Новая заявка';
     this.button.textContent = booking.status === 'confirmed' ? 'Подтверждено' : 'Подтвердить';
     this.button.disabled = booking.status === 'confirmed' ? true : false;
-    // П10: выведите «Индивидуально» или «Группа» в groupText.
+    this.groupText.textContent = booking.seats === 1 ? 'Индивидуально' : 'Группа';
   }
 
   private onConfirm = () => {
@@ -64,7 +64,7 @@ export class BookingCard extends HTMLElement {
   }
 
   disconnectedCallback() {
-    // П8: снимите тот же обработчик.
+   this.button.removeEventListener('click', this.onConfirm)
   }
 }
 
